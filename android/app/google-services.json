@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "27555716527",
+    "project_id": "blooddonationqatariphon",
+    "storage_bucket": "blooddonationqatariphon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27555716527:android:476240829905064641e35a",
+        "android_client_info": {
+          "package_name": "com.example.test_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4qrGerSCR2KYHpO_fqPiJPDS-0lydjtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

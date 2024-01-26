@@ -1,70 +1,71 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_flutter/Core/themController.dart';
+import 'package:test_flutter/Core/FirbaseMessagingController.dart';
+import 'package:test_flutter/Core/GeneralController.dart';
+import 'package:test_flutter/Core/ThemeClass.dart';
+import 'package:test_flutter/firebase_options.dart';
 import 'package:test_flutter/views/home.dart';
 
-void main() {
+FirebaseMessagingController messagingController = FirebaseMessagingController();
+// Background For Notifications
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  if (kDebugMode) {
+    print("background==============");
+    if (message.notification != null) {
+      print(message.notification!.title);
+    } else {
+      print("Notification is null");
+    }
+  }
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Background For Notifications
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Permssion For Notifications
+  messagingController.requestPermission();
+//  Foreground For Notifications
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    if (message.notification != null) {
+      if (kDebugMode) {
+        print("Foreground==============");
+        print(message.notification!.title);
+      }
+    }
+  });
+
+  // For Check User Auth
+  FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out!');
+    } else {
+      print('User is signed in!');
+    }
+  });
+// ------------------------
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    ChangeTheme controller = Get.put(ChangeTheme());
+    GeneralController controller = Get.put(GeneralController());
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         locale: Get.deviceLocale,
         title: 'Flutter Demo',
-        themeMode: ThemeMode.light,
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-        ),
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.green,
-          hintColor: Colors.green,
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: Colors.green[300]),
-          scaffoldBackgroundColor: Colors.white,
-          cardColor: Colors.green,
-          dividerColor: Colors.black,
-          textTheme: const TextTheme(
-            headline1: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
-            headline2: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600),
-            bodyText1: TextStyle(fontSize: 16.0),
-            bodyText2: TextStyle(fontSize: 14.0),
-          ),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            titleTextStyle:
-                TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-          ),
-          buttonTheme: ButtonThemeData(
-            buttonColor: Colors.orange,
-            textTheme: ButtonTextTheme.primary,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            filled: true,
-            fillColor: Colors.grey[200],
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide.none,
-            ),
-          ),
-          tooltipTheme: TooltipThemeData(
-            decoration: BoxDecoration(
-              color: Colors.black87,
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            textStyle: TextStyle(color: Colors.white),
-          ),
-        ),
+        themeMode: ThemeMode.system,
+        theme: ThemeClass.lightTheme,
+        darkTheme: ThemeClass.darkTheme,
         home: const Home());
   }
 }

@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_flutter/Components/button_component.dart';
 import 'package:test_flutter/Components/field_component.dart';
-import 'package:test_flutter/Core/themController.dart';
+import 'package:test_flutter/Core/GeneralController.dart';
+import 'package:test_flutter/Core/ThemeClass.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController name = TextEditingController();
-    ChangeTheme controller = Get.find();
+    GeneralController controller = Get.find();
     return Scaffold(
         appBar: AppBar(
           title: const Text("data"),
@@ -32,18 +32,15 @@ class Home extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
-          ButtonComponent(backcolor: Theme.of(context).primaryColorDark),
-          const ButtonComponent(),
+          // ButtonComponent(backcolor: ThemeClass.darkTheme.colorScheme.primary),
+          ButtonComponent(
+              backcolor: Theme.of(context).colorScheme.primary,
+              textStyle: Theme.of(context).textTheme.bodyLarge),
           TextButton(
               onPressed: () {
-                // var locale = const Locale('ar', 'LB ');
-                // Get.updateLocale(locale);
-                // if (kDebugMode) {
-                //   print(locale.countryCode);
-                // }
                 controller.changeMode();
               },
-              child: const Text("Change Local"))
+              child: const Text("Change Theme"))
         ]));
   }
 }

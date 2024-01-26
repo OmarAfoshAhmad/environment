@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+
 class ButtonComponent extends StatelessWidget {
   final double width;
   final double height;
@@ -12,6 +13,7 @@ class ButtonComponent extends StatelessWidget {
   final double rounded;
   final double mHorizantal;
   final double mVertical;
+  final TextStyle? textStyle;
   const ButtonComponent({
     super.key,
     this.width = 100,
@@ -24,6 +26,7 @@ class ButtonComponent extends StatelessWidget {
     this.rounded = 15,
     this.mHorizantal = 20,
     this.mVertical = 10,
+     required this.textStyle,
   });
 
   @override
@@ -47,7 +50,7 @@ class ButtonComponent extends StatelessWidget {
           children: [
             Text(
               "Exit",
-              style: TextStyle(fontSize: sizeFont),
+              style: textStyle,
             ),
             SizedBox(
               width: width / 25,
